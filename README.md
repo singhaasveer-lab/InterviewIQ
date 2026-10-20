@@ -96,6 +96,8 @@ Then start both servers in two terminals:
 # Terminal 1: backend (run from the project root)
 python -m uvicorn backend.app.main:app --port 8000
 # or: npm run dev:api
+# On Windows, if `python` is a different version from the one you installed packages into,
+# use the launcher instead:  py -m uvicorn backend.app.main:app --port 8000
 
 # Terminal 2: frontend
 npm run dev
