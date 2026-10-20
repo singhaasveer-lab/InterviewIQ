@@ -1,0 +1,6 @@
+{
+  "name": "InterviewIQ",
+  "description": "AI-powered mock interview platform with real-time evaluation, voice & coding practice, resume intelligence, and adaptive RAG coaching.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
