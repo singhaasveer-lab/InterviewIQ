@@ -1,5 +1,7 @@
 # INTERVIEWIQ — AI-Powered Mock Interview Platform
 
+[![CI](https://github.com/singhaasveer-lab/InterviewIQ/actions/workflows/ci.yml/badge.svg)](https://github.com/singhaasveer-lab/InterviewIQ/actions/workflows/ci.yml)
+
 InterviewIQ is an enterprise-grade AI mock interview platform that helps students, fresh graduates, and job seekers practice realistic interviews, receive granular AI evaluations, improve weak technical and behavioral areas, and prepare for targeted positions.
 
 
