@@ -23,7 +23,7 @@ InterviewIQ is an enterprise-grade AI mock interview platform that helps student
 
 1. **Realistic AI Interviews**
    - Configurable for any technical, behavioral (STAR method), system design, or mixed role.
-   - Dynamic difficulty (Junior, Mid, Senior, Lead).
+   - Difficulty levels: Easy, Medium, Hard and Adaptive.
    - **Exact question count guarantee** (5, 10, 15, or 20 questions generated on demand).
    - Multi-modal question formats: Multiple Choice Questions (MCQ) & open-ended technical reasoning.
 
@@ -68,44 +68,52 @@ InterviewIQ is an enterprise-grade AI mock interview platform that helps student
 ## 🛠️ Architecture & Tech Stack
 
 - **Frontend**: HTML5, CSS3, TypeScript, React 19, Tailwind CSS v4, Motion animations, Lucide icons.
-- **Server**: Node.js & Express proxy (`server.ts`) hosting Vite middlewares on port 3000.
+- **Web server**: Node.js & Express (`server.ts`) serves the Vite app on port 3000 and proxies `/api` to FastAPI.
 - **Python Backend**: Python 3.13-compatible, FastAPI, Pydantic v2, SQLAlchemy ORM, SQLite (`sqlite:///./interviewiq.db`), PyJWT, bcrypt, Google GenAI SDK (`from google import genai`).
 
 ---
 
 ## 💻 Running Locally
 
-### Option 1: AI Studio / Node Server (Ready Out of the Box)
+InterviewIQ has two parts that must both be running: the **FastAPI backend** (port 8000) and the **web server** (port 3000, Express + Vite). You need Node.js 20+ and Python 3.10+.
 
 ```bash
 # 1. Install dependencies
 npm install
-
-# 2. Run full-stack dev server (Express + Vite on port 3000)
-npm run dev
-```
-
-Visit `http://localhost:3000` in your browser.
-
-### Option 2: Python 3.13 FastAPI Backend + Vite Frontend
-
-```bash
-# 1. Set up Python 3.13 virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
-# 2. Configure .env file
-cp .env.example .env
-# Edit .env with your GEMINI_API_KEY
+# 2. Configure secrets: copy the template and fill it in
+cp backend/.env.example backend/.env
+#    GEMINI_API_KEY  -> get one at https://aistudio.google.com/apikey
+#    JWT_SECRET      -> python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
 
-# 3. Start FastAPI backend (port 8000)
-uvicorn backend.app.main:app --reload --port 8000
+Then start both servers in two terminals:
 
-# 4. In another terminal, run frontend
-npm install
+```bash
+# Terminal 1: backend (run from the project root)
+python -m uvicorn backend.app.main:app --port 8000
+# or: npm run dev:api
+
+# Terminal 2: frontend
 npm run dev
 ```
+
+Open http://localhost:3000, click **Register**, and you're in. API docs are at http://localhost:8000/docs.
+
+> The instant aptitude test works without a Gemini key. Interviews, AI-generated aptitude questions, the coach and the analyzers need one.
+
+### Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest                # backend: auth, privacy, analytics, aptitude, rate limits
+npx tsc --noEmit      # frontend type-check
+```
+
+The suite uses a throwaway database and a mocked Gemini client, so it needs no API key and never makes network calls. It also re-derives every answer in the instant question bank to prove the answer keys are correct.
+
+> `docker-compose.yml` is a leftover from an earlier Postgres design. It is not currently wired up (there are no Dockerfiles) and the app runs on SQLite, so use the steps above.
 
 ---
 
